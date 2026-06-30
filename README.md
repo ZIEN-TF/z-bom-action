@@ -2,8 +2,6 @@
 
 PR마다 **git-tracked 소스를 Z-BOM에 제출 → 분석 완료까지 대기 → SBOM/CVE 결과를 PR 코멘트·Job Summary로 보고**하는 composite 액션입니다. 인증은 Z-BOM 발급 **CI 토큰**(`Z_BOM_TOKEN`)을 사용합니다.
 
-> 이 폴더는 향후 `zi-en/z-bom-action` 저장소로 그대로 분리할 수 있도록 구성돼 있습니다(`action.yml`이 루트). 분리 전 모노레포 안에서는 `uses: ./z-bom-action` 로컬 경로로도 호출 가능합니다.
-
 ## 사용법
 
 `.github/workflows/sbom-checker.yml` ([examples/sbom-checker.yml](examples/sbom-checker.yml)):
