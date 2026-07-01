@@ -41,6 +41,12 @@ submit="$(curl -fsS -X POST "$URL/api/ci/scan" \
   -F "trigger=$ZBOM_TRIGGER" \
   -F "file=@$ARC")" || { err "submit failed"; exit 1; }
 
+# 연동 일시중지(active OFF): 서버가 점검 없이 skipped 반환 → 통과 처리
+if [ "$(echo "$submit" | jq -r '.skipped // false')" = "true" ]; then
+  info "integration paused (skipped: $(echo "$submit" | jq -r '.reason // ""')) — nothing to do"
+  exit 0
+fi
+
 RID="$(echo "$submit" | jq -r '.analysisRunId // empty')"
 [ -n "$RID" ] || { err "no analysisRunId in response: $submit"; exit 1; }
 info "analysis run: $RID (idempotent=$(echo "$submit" | jq -r '.idempotent // false'))"
