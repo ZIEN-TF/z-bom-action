@@ -8,6 +8,10 @@ inputs:
   url:
     description: "Z-BOM server URL (e.g. http://z-bom:8000)"
     required: true
+  web-url:
+    description: "Z-BOM web UI base for the report link (defaults to url)"
+    required: false
+    default: ""
   token:
     description: "Z-BOM CI token (store as the Z_BOM_TOKEN secret)"
     required: true
@@ -66,6 +70,7 @@ runs:
       run: ${{ github.action_path }}/entrypoint.sh
       env:
         ZBOM_URL: ${{ inputs.url }}
+        ZBOM_WEB_URL: ${{ inputs.web-url }}
         ZBOM_TOKEN: ${{ inputs.token }}
         ZBOM_TYPE: ${{ inputs.type }}
         ZBOM_PATH: ${{ inputs.path }}

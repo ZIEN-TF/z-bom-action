@@ -78,25 +78,30 @@ med=$(echo "$RESULT"  | jq -r '.cveSeverity.MEDIUM // 0')
 low=$(echo "$RESULT"  | jq -r '.cveSeverity.LOW // 0')
 total=$(echo "$RESULT" | jq -r '.totalCve // 0')
 sbom=$(echo "$RESULT" | jq -r '.sbomCount // 0')
-riskCve=$(echo "$RESULT" | jq -r '.riskCve // empty')
-riskSev=$(echo "$RESULT" | jq -r '.riskSeverity // empty')
-riskScore=$(echo "$RESULT" | jq -r '.riskScore // empty')
+hbom=$(echo "$RESULT" | jq -r '.hbomCount // 0')
+pid=$(echo "$RESULT" | jq -r '.projectId // empty')
+ptype=$(echo "$RESULT" | jq -r '.type // ""')
+case "$ptype" in
+  SOURCE_CODE) ptype_label="소스코드" ;;
+  FIRMWARE) ptype_label="펌웨어" ;;
+  *) ptype_label="${ptype:-—}" ;;
+esac
 
-# 마크다운 본문(업서트용 마커 포함)
+# 진단 요약 마크다운(업서트용 마커 포함) — 점검유형·컴포넌트·취약점·보고서 링크
 marker="<!-- z-bom-action -->"
 icon="✅"; [ "$STATUS" = "FAILED" ] && icon="❌"
 body="$marker
-## $icon Z-BOM SBOM 점검 · \`$STATUS\`
+## $icon Z-BOM SBOM 진단 결과 · \`$STATUS\`
 
-**컴포넌트(SBOM)** $sbom · **대응 필요 CVE** $total
-
-| 심각도 | Critical | High | Medium | Low |
-|---|---|---|---|---|
-| 개수 | $crit | $high | $med | $low |"
-if [ -n "$riskCve" ]; then
+| 항목 | 값 |
+|---|---|
+| 점검유형 | $ptype_label |
+| 컴포넌트 | SBOM $sbom · HBOM $hbom |
+| 취약점 | 🔴 Critical $crit · 🟠 High $high · 🟡 Medium $med · ⚪ Low $low (총 $total) |"
+if [ -n "$pid" ]; then
   body="$body
 
-**최고 위험**: \`$riskCve\` ($riskSev${riskScore:+ · CVSS $riskScore})"
+📄 [보고서 보기](${ZBOM_WEB_URL:-$URL}/project/${pid}/summary)"
 fi
 body="$body
 
