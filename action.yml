@@ -86,4 +86,5 @@ runs:
         ZBOM_BRANCH: ${{ github.head_ref || github.ref_name }}
         ZBOM_TRIGGER: "${{ github.event_name }}${{ github.event.action && format(': {0}', github.event.action) || '' }}"
         ZBOM_PR: ${{ github.event.pull_request.number }}
+        ZBOM_REF: "${{ github.event.pull_request.number && format('PR #{0}', github.event.pull_request.number) || '' }}"
         GITHUB_API_URL: ${{ github.api_url }}

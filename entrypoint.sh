@@ -39,6 +39,7 @@ submit="$(curl -fsS -X POST "$URL/api/ci/scan" \
   -F "commit=$ZBOM_COMMIT" \
   -F "branch=$ZBOM_BRANCH" \
   -F "trigger=$ZBOM_TRIGGER" \
+  -F "ref=$ZBOM_REF" \
   -F "file=@$ARC")" || { err "submit failed"; exit 1; }
 
 # 연동 일시중지(active OFF): 서버가 점검 없이 skipped 반환 → 통과 처리
