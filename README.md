@@ -43,7 +43,7 @@ jobs:
     runs-on: [self-hosted, zbom]
     steps:
       - uses: actions/checkout@v4
-      - uses: ZIEN-TF/z-bom-action@v1
+      - uses: ZIEN-TF/z-bom-action@v1.0.0
         with:
           url: ${{ secrets.Z_BOM_URL }}
           token: ${{ secrets.Z_BOM_TOKEN }}
@@ -90,9 +90,3 @@ jobs:
 4. `GET /api/analysis-runs/{id}/result` → 심각도별 개수·최고위험 CVE·컴포넌트 수.
 5. PR 코멘트 업서트(마커로 갱신) + `$GITHUB_STEP_SUMMARY`.
 6. `fail-on` 임계 초과 또는 분석 실패 시 잡 실패(exit 1), 그 외 통과.
-
-## 버전 고정
-
-- **권장**: `ZIEN-TF/z-bom-action@v1` — `v1` 메이저 태그는 v1.x 최신 릴리스를 따라갑니다(하위 호환 변경만 반영).
-- **특정 릴리스 고정**: `ZIEN-TF/z-bom-action@v1.0.0` — 해당 릴리스에 고정되어 이후 변경의 영향을 받지 않습니다.
-- **가장 엄격한 고정**: 커밋 SHA 지정 — 예: v1.0.0의 `ZIEN-TF/z-bom-action@67eeaba699677d7a40b92a427a1317798a16d1a7`
