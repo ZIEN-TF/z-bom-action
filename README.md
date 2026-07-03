@@ -43,7 +43,7 @@ jobs:
     runs-on: [self-hosted, zbom]
     steps:
       - uses: actions/checkout@v4
-      - uses: ZIEN-TF/z-bom-action@v1.0.0
+      - uses: ZIEN-TF/z-bom-action@v1
         with:
           url: ${{ secrets.Z_BOM_URL }}
           token: ${{ secrets.Z_BOM_TOKEN }}
