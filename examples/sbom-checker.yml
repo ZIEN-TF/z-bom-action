@@ -9,10 +9,10 @@ permissions:
 
 jobs:
   sbom_checker:
-    runs-on: [self-hosted, zbom] # 사내망에서 Z-BOM에 도달 가능한 러너
+    runs-on: [self-hosted, zbom] # 사내망의 온프레미스 Z-BOM에 도달 가능한 러너 (GitHub-hosted 러너 불가)
     steps:
       - uses: actions/checkout@v4 # git archive를 위해 체크아웃 필요
-      - uses: zi-en/z-bom-action@v1
+      - uses: ZIEN-TF/z-bom-action@v1
         with:
           url: ${{ secrets.Z_BOM_URL }}
           token: ${{ secrets.Z_BOM_TOKEN }}

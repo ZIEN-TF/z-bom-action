@@ -1,6 +1,10 @@
 # Z-BOM SBOM Checker (GitHub Action)
 
+> **English**: Submits your git-tracked source to a **self-hosted (on-premises) Z-BOM instance** for SBOM/CVE analysis and reports the results as a PR comment / Job Summary. This action is a *client* for Z-BOM — it requires a Z-BOM deployment reachable from your runner and does **not** work standalone.
+
 PR마다 **git-tracked 소스를 Z-BOM에 제출 → 분석 완료까지 대기 → SBOM/CVE 결과를 PR 코멘트·Job Summary로 보고**하는 composite 액션입니다. 인증은 Z-BOM 발급 **CI 토큰**(`Z_BOM_TOKEN`)을 사용합니다.
+
+> ⚠️ **온프레미스 Z-BOM 서비스가 필요합니다.** 이 액션은 사내(온프레미스) 환경에 구축된 Z-BOM 서비스를 호출하는 **클라이언트**입니다. Z-BOM 서버 없이는 동작하지 않습니다. 소스 아카이브는 여러분이 `url`로 지정한 Z-BOM 서버로만 전송되며, 그 외 외부 서비스로는 전송되지 않습니다. Z-BOM 도입·구축에 관해서는 공급사 [ZIEN](https://zi-en.io)에 문의하세요.
 
 ## 사용법
 
@@ -15,7 +19,7 @@ jobs:
     runs-on: [self-hosted, zbom]
     steps:
       - uses: actions/checkout@v4
-      - uses: zi-en/z-bom-action@v1
+      - uses: ZIEN-TF/z-bom-action@v1
         with:
           url: ${{ secrets.Z_BOM_URL }}
           token: ${{ secrets.Z_BOM_TOKEN }}
@@ -23,8 +27,9 @@ jobs:
 ```
 
 ### 사전 준비
-- **Secret**: `Z_BOM_URL`(사내 Z-BOM 주소), `Z_BOM_TOKEN`(CI/CD 연동 설정 화면에서 발급).
-- **러너**: 사내망에서 Z-BOM에 도달 가능한 self-hosted 러너. `curl`·`jq`·`git` 필요.
+- **Z-BOM 서비스(온프레미스)**: 사내망에 Z-BOM이 구축·운영 중이어야 합니다. 이 액션은 해당 서버의 API(`/api/ci/scan` 등)를 호출할 뿐, 자체적으로 SBOM을 생성하지 않습니다.
+- **러너**: Z-BOM 서버에 네트워크로 도달 가능한 **self-hosted 러너**. Z-BOM은 보통 사내망에만 열려 있으므로 GitHub-hosted 러너로는 일반적으로 사용할 수 없습니다. 러너에 `curl`·`jq`·`git` 필요.
+- **Secret**: `Z_BOM_URL`(사내 Z-BOM 주소), `Z_BOM_TOKEN`(Z-BOM의 CI/CD 연동 설정 화면에서 발급).
 - **권한**: PR 코멘트를 쓰려면 `permissions: pull-requests: write`.
 - `actions/checkout`을 먼저 실행해야 `git archive`로 소스를 패키징할 수 있습니다.
 

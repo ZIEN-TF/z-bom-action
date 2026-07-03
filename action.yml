@@ -1,5 +1,5 @@
 name: "Z-BOM SBOM Checker"
-description: "Submit source to Z-BOM, wait for the scan, and report SBOM/CVE results on the PR."
+description: "Submit source to your on-premises Z-BOM service for SBOM/CVE analysis and report results on the PR."
 branding:
   icon: shield
   color: purple
