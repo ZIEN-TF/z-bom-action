@@ -102,7 +102,7 @@ body="$marker
 if [ -n "$pid" ]; then
   body="$body
 
-📄 [보고서 보기](${ZBOM_WEB_URL:-$URL}/project/${pid}/summary)"
+📄 [보고서 보기](${ZBOM_WEB_URL:-$URL}/inspection/${pid}/summary)"
 fi
 body="$body
 
